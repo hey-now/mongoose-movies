@@ -4,6 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// It's very important to require dotenv before any
+// module that depends upon the environment variables
+// in the .env file
+require('dotenv').config();
+// Connect to Atlas/MongoDB AFTER the dotenv has processed the .env file
+require('./config/database');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
