@@ -4,6 +4,8 @@ var moviesCtrl = require('../controllers/movies');
 
 // All routes start with '/movies'
 
+// GET /movies
+router.get('/', moviesCtrl.index);
 // GET /movies/new
 router.get('/new', moviesCtrl.new);
 // POST /movies
