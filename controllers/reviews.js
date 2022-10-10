@@ -10,7 +10,7 @@ function create(req, res) {
     // review subdoc into Mongoose arrays
     movie.reviews.push(req.body);
     movie.save(function(err) {
-      // Step 5
+      // Step 5: Respond with a redirect because we've mutated data
       res.redirect(`/movies/${movie._id}`);
     });
   });

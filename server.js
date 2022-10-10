@@ -4,16 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-// It's very important to require dotenv before any
-// module that depends upon the environment variables
-// in the .env file
+// Load the "secrets" in the .env file
 require('dotenv').config();
-// Connect to Atlas/MongoDB AFTER the dotenv has processed the .env file
+// Connect to the MongoDB database
 require('./config/database');
 
 var indexRouter = require('./routes/index');
 var moviesRouter = require('./routes/movies');
 var reviewsRouter = require('./routes/reviews');
+var performersRouter = require('./routes/performers');
 
 var app = express();
 
@@ -29,9 +28,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/movies', moviesRouter);
-// Mounting to root because not all routes
-// for reviews starts with /reviews
+// Cannot use /reviews as a starts with path because many of the 
+// proper routes start with /movies
 app.use('/', reviewsRouter);
+app.use('/', performersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
