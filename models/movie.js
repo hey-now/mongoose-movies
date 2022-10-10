@@ -33,7 +33,10 @@ const movieSchema = new Schema({
     type: String,
     enum: ['G', 'PG', 'PG-13', 'R']
   },
-  cast: [String],
+  cast: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Performer'
+  }],
   nowShowing: {
     type: Boolean,
     default: false
