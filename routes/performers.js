@@ -8,5 +8,7 @@ const performersCtrl = require('../controllers/performers');
 router.get('/performers/new', performersCtrl.new);
 // POST /performers
 router.post('/performers', performersCtrl.create);
+// POST /movies/:id/performers (assoc movie & performer)
+router.post('/movies/:id/performers', performersCtrl.addToCast);
 
 module.exports = router;

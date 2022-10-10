@@ -3,8 +3,18 @@ const Movie = require('../models/movie');
 
 module.exports = {
   new: newPerformer,
-  create
+  create,
+  addToCast
 };
+
+function addToCast(req, res) {
+  Movie.findById(req.params.id, function(err, movie) {
+    movie.cast.push(req.body.performerId);
+    movie.save(function(err) {
+      res.redirect(`/movies/${movie._id}`);
+    });
+  });
+}
 
 function create(req, res) {
   // Need to "fix" date formatting to prevent day off by 1
