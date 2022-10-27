@@ -3,11 +3,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+// adding the session cookies
+var session = require('express-session');
+// passport
+var passport = require('passport');
+// method-overide
+var methodOverride = require('method-override');
 
 // Load the "secrets" in the .env file
 require('dotenv').config();
 // Connect to the MongoDB database
 require('./config/database');
+// Configure passport
+require('./config/passport');
 
 var indexRouter = require('./routes/index');
 var moviesRouter = require('./routes/movies');
@@ -24,7 +32,23 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// mounting session and passport
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Dynamic NAV bar
+app.use(function(req, res, next) {
+  res.locals.user = req.user;
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/movies', moviesRouter);
